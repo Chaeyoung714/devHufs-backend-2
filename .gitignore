@@ -234,3 +234,8 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,django,macos
+
+#배포 관련 
+
+cert/*
+init-letsencrypt.sh
