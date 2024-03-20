@@ -2,7 +2,7 @@ version: "3"
 services:
   web:
     image: devhufs
-    container_name: web-container
+    container_name: web
     command: bash -c "gunicorn devhufs.wsgi:application -b 0.0.0.0:8000" # 서버 실행
     ports:
       - "8000:8000"
@@ -25,7 +25,7 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - web-container
+      - web
     networks:
       - server
 
