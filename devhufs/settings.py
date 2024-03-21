@@ -27,7 +27,16 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+#수정
+ALLOWED_HOSTS = ['*']
+CORS_ALLOWED_ORIGINS = [
+	'http://localhost:3000',
+    'https://localhost:3000',
+    'https://devhufs.site',
+    'http://devhufs.site',
+]
+# CSRF_TRUSTED_ORIGINS = ['https://api.domtory.site',]
+
 
 
 # Application definition
