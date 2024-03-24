@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#수정
+#cors 에러
 ALLOWED_HOSTS = ['*']
 CORS_ALLOWED_ORIGINS = [
 	'http://localhost:3000',
@@ -35,13 +35,16 @@ CORS_ALLOWED_ORIGINS = [
     'https://devhufs.site',
     'http://devhufs.site',
 ]
+
 # CSRF_TRUSTED_ORIGINS = ['https://api.domtory.site',]
+
+CORS_ALLOW_CREDENTIALS = True
 
 
 
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,7 +53,21 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+PACKAGE_APPS = [
+    'rest_framework',
+    'storages',
+]
+
+
+PROJECT_APPS = [
+    'board',
+    'member',
+]
+
+INSTALLED_APPS = DJANGO_APPS + PACKAGE_APPS + PROJECT_APPS
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -145,8 +162,25 @@ STATIC_URL = 'static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
+
+###### 배포 설정 ######
+STATIC_ROOT = BASE_DIR / 'static'
+
+
+###### AWS s3 설정 ######
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config('BUCKET_NAME')
 
-# 배포 설정
-STATIC_ROOT = BASE_DIR / 'static'
+# AWS_REGION = 'ap-northeast-2'
+AWS_S3_CUSTOM_DOMAIN = "devhufs-awsbucket.s3.ap-northeast-2.amazonaws.com"
+
+#media setting
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+MEDIA_URL = "https://%s/meida/" % AWS_S3_CUSTOM_DOMAIN
+
+#static setting
+STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+STATIC_URL = "https://%s/static/" % AWS_S3_CUSTOM_DOMAIN
